@@ -1,0 +1,35 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby_version: [3.0.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby_version }}
+    - name: Calculate variable dynamic values
+      id: dynamic_values
+      run: |
+        echo "::set-output name=installed_ruby_version::$(ruby -e 'print RUBY_VERSION')"
+        echo "::set-output name=cacheTimeAnchor::$(ruby -e 'require %Q{date}; cacheExpirationSeconds = 60*60*24; print (Time.now.to_i / cacheExpirationSeconds)')"
+    - name: Install and config bundler
+      run: |
+        gem install bundler
+    - name: Install dependencies
+      run: |
+        bundle config set path 'vendor/bundle'
+        bundle config set without tools
+        bundle install --jobs 4 --retry 3
+    - name: Run code analysis
+      run: |
+        bundle exec rubocop
+    - name: Run tests
+      run: |
+        bundle exec rspec

@@ -126,6 +126,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dry-struct
   dry-system (~> 0.19.0)
   puma
   rack-test

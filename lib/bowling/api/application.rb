@@ -29,6 +29,7 @@ module Bowling
         end
       end
 
+      # rubocop:disable Metrics/BlockLength
       route do |routes|
         routes.on('api') do
           routes.on('games') do
@@ -43,9 +44,37 @@ module Bowling
                 }
               end
             end
+
+            routes.on String do
+              routes.is do
+                routes.get do
+                  game = Container['games.create'].call('Vic')
+
+                  {
+                    player_name: game.player_name,
+                    uid: game.uid,
+                    state: game.state,
+                    score: {
+                      1 => [],
+                      2 => [],
+                      3 => [],
+                      4 => [],
+                      5 => [],
+                      6 => [],
+                      7 => [],
+                      8 => [],
+                      9 => [],
+                      10 => [],
+                      total: 0
+                    }
+                  }
+                end
+              end
+            end
           end
         end
       end
+      # rubocop:enable Metrics/BlockLength
     end
   end
 end

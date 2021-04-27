@@ -24,4 +24,6 @@ module Bowling
       end
     end
   end
+
+  Injector = Container.injector
 end

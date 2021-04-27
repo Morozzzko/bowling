@@ -9,6 +9,11 @@ gem 'dry-system', '~> 0.19.0'
 gem 'oj'
 gem 'puma'
 gem 'roda'
+gem 'rom'
+gem 'rom-sql'
+gem 'sqlite3'
+
+gem 'rake'
 
 group :lint do
   gem 'rubocop'
@@ -17,6 +22,7 @@ end
 
 group :test do
   gem 'rack-test'
+  gem 'rom-factory'
   gem 'rspec'
   gem 'simplecov'
 end

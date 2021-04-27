@@ -40,6 +40,13 @@ RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec
       it 'creates a new game' do
         expect(response).to be_successful
         expect(json_body).to match({ 'game_uid' => String })
+
+        game_uid = json_body['game_uid']
+
+        game = Bowling::Container['repositories.games'][game_uid]
+
+        expect(game.player_name).to eql('Vic')
+        expect(game.state).to eql('playing')
       end
     end
   end

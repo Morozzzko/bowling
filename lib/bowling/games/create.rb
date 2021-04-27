@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'bowling/game'
-
 module Bowling
   module Games
     class Create
+      include Bowling::Injector['repositories.games']
+
       def call(player_name)
-        Game.new(player_name: player_name)
+        games.create(player_name: player_name)
       end
     end
   end

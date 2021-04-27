@@ -6,15 +6,16 @@ require 'oj'
 RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec/FilePath
   subject(:app) { described_class }
 
+  let(:json_body) do
+    Oj.load(response.body)
+  rescue StandardError
+    nil
+  end
+
   describe 'POST api/games' do
     subject(:response) { post '/api/games', json_params, { 'CONTENT_TYPE' => 'application/json' } }
 
     let(:json_params) { Oj.dump(params, mode: :compat) }
-    let(:json_body) do
-      Oj.load(response.body)
-    rescue StandardError
-      nil
-    end
 
     context 'when params are missing' do
       let(:json_params) { nil }
@@ -40,6 +41,24 @@ RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec
         expect(response).to be_successful
         expect(json_body).to match({ 'game_uid' => String })
       end
+    end
+  end
+
+  describe 'GET api/games/:uid' do
+    subject(:response) { get "api/games/#{uid}" }
+
+    let(:uid) { 'randomuid' }
+
+    it 'returns game info and score' do
+      expect(response).to be_successful
+      expect(json_body).to match(
+        {
+          'uid' => String,
+          'player_name' => String,
+          'state' => 'playing',
+          'score' => Hash
+        }
+      )
     end
   end
 end

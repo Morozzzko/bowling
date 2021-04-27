@@ -3,7 +3,7 @@
 require 'bowling/game'
 
 RSpec.describe Bowling::Game do
-  subject(:new_game) { described_class.new }
+  subject(:new_game) { described_class.new(player_name: 'Vic') }
 
   describe '#throw_ball' do
     subject(:throw_ball) { game.throw_ball(knocked_down_pins) }

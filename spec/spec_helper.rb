@@ -31,3 +31,4 @@ RSpec.configure do |config|
 end
 
 require_relative '../boot'
+require_relative 'support/factories'

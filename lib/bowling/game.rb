@@ -3,12 +3,6 @@
 require 'dry-struct'
 require 'securerandom'
 
-module Types
-  include Dry.Types
-
-  UID = Types::String.constrained(min_size: 5)
-end
-
 module Bowling
   class NextFrameState
     def call(frame, pins)

@@ -45,10 +45,11 @@ module Bowling
               end
             end
 
-            routes.on String do
+            routes.on String do |uid|
               routes.is do
                 routes.get do
-                  game = Container['games.create'].call('Vic')
+                  games = Container['repositories.games']
+                  game = games[uid]
 
                   {
                     player_name: game.player_name,

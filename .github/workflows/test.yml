@@ -30,6 +30,9 @@ jobs:
     - name: Run code analysis
       run: |
         bundle exec rubocop
+    - name: Run migrations
+      run: |
+        bundle exec rake db:migrate
     - name: Run tests
       run: |
         bundle exec rspec

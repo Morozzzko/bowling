@@ -47,15 +47,17 @@ RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec
   describe 'GET api/games/:uid' do
     subject(:response) { get "api/games/#{uid}" }
 
-    let(:uid) { 'randomuid' }
+    let(:uid) { game.uid }
+
+    let(:game) { Factory[:game] }
 
     it 'returns game info and score' do
       expect(response).to be_successful
       expect(json_body).to match(
         {
-          'uid' => String,
-          'player_name' => String,
-          'state' => 'playing',
+          'uid' => game.uid,
+          'player_name' => game.player_name,
+          'state' => game.state,
           'score' => Hash
         }
       )

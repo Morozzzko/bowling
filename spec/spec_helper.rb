@@ -20,6 +20,11 @@ RSpec.configure do |config|
   config.default_formatter = 'doc'
   config.profile_examples = 10
   config.order = :random
+
+  config.define_derived_metadata do |meta|
+    meta[:aggregate_failures] = true
+  end
+
   Kernel.srand config.seed
 
   config.include Rack::Test::Methods, type: :http

@@ -10,6 +10,7 @@ gem 'roda'
 
 group :lint do
   gem 'rubocop'
+  gem 'rubocop-rspec'
 end
 
 group :test do
@@ -20,6 +21,5 @@ end
 
 group :tools do
   gem 'rubocop-daemon'
-  gem 'rubocop-rspec'
   gem 'solargraph'
 end

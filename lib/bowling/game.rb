@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require 'dry-struct'
+require 'securerandom'
 
 module Types
   include Dry.Types
+
+  UID = Types::String.constrained(min_size: 5)
 end
 
 module Bowling
@@ -61,6 +64,8 @@ module Bowling
   class Game < Dry::Struct
     attribute :frames, Types.Array(Frame | LastFrame).default([Frame.new])
     attribute :state, Types::String.default('playing').enum('playing', 'ended')
+    attribute :player_name, Types::String
+    attribute :uid, (Types::UID.default { SecureRandom.hex })
 
     def current_frame
       frames.last

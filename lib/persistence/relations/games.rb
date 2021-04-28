@@ -3,7 +3,11 @@
 module Persistence
   module Relations
     class Games < ROM::Relation[:sql]
-      schema(:games, infer: true)
+      schema(:games, infer: true) do
+        associations do
+          has_many :frames
+        end
+      end
     end
   end
 end

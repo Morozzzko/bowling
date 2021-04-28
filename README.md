@@ -72,3 +72,11 @@ Example:
   }
 }
 ```
+
+### `POST /api/games/:uid/knocked_down_pins`
+
+Notify that a player has knocked down specific number of pins.
+
+**Required parameter**: `pins` – number of pins knocked down after a throw.
+
+**Returns** 422 on invalid input or 200 with game composite on success

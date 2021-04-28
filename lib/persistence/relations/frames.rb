@@ -15,6 +15,10 @@ module Persistence
         attribute :created_at, Types::Time
         attribute :updated_at, Types::Time
       end
+
+      dataset do
+        order(:serial_number)
+      end
     end
   end
 end

@@ -12,6 +12,8 @@ RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec
     nil
   end
 
+  let(:games) { Bowling::Container['repositories.games'] }
+
   describe 'POST api/games' do
     subject(:response) { post '/api/games', json_params, { 'CONTENT_TYPE' => 'application/json' } }
 
@@ -43,7 +45,7 @@ RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec
 
         game_uid = json_body['game_uid']
 
-        game = Bowling::Container['repositories.games'][game_uid]
+        game = games[game_uid]
 
         expect(game.player_name).to eql('Vic')
         expect(game.state).to eql('playing')

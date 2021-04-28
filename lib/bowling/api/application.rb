@@ -29,8 +29,9 @@ module Bowling
         end
       end
 
-      # rubocop:disable Metrics/BlockLength
       route do |routes|
+        serialize_game = Container['api.serializers.game']
+
         routes.on('api') do
           routes.on('games') do
             routes.is do
@@ -46,36 +47,18 @@ module Bowling
             end
 
             routes.on String do |uid|
+              games = Container['repositories.games']
+              game = games[uid]
+
               routes.is do
                 routes.get do
-                  games = Container['repositories.games']
-                  game = games[uid]
-
-                  {
-                    player_name: game.player_name,
-                    uid: game.uid,
-                    state: game.state,
-                    score: {
-                      1 => [],
-                      2 => [],
-                      3 => [],
-                      4 => [],
-                      5 => [],
-                      6 => [],
-                      7 => [],
-                      8 => [],
-                      9 => [],
-                      10 => [],
-                      total: 0
-                    }
-                  }
+                  serialize_game.call(game)
                 end
               end
             end
           end
         end
       end
-      # rubocop:enable Metrics/BlockLength
     end
   end
 end

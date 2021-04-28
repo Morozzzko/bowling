@@ -10,7 +10,9 @@ module Bowling
       def call(player_name)
         game = Bowling::Game.new(player_name: player_name)
 
-        games.create(game)
+        persisted_game = games.create(game)
+
+        games[persisted_game.uid]
       end
     end
   end

@@ -14,9 +14,7 @@ module Bowling
 
               game = Container['games.create'].call(player_name)
 
-              {
-                game_uid: game.uid
-              }
+              serialize_game.call(game)
             end
           end
 

@@ -18,6 +18,17 @@ module Bowling
         end
       end
 
+      def update(game)
+        root.transaction do
+          root.where(uid: game.uid).changeset(
+            :update,
+            game
+          ).map(:touch).commit.tap do |persisted_game|
+            replace_frames(game, persisted_game)
+          end
+        end
+      end
+
       private
 
       def replace_frames(game, persisted_game)

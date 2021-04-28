@@ -6,4 +6,6 @@ Factory.define(:game) do |f|
   f.state { 'playing' }
 
   f.timestamps
+
+  f.association(:frames, count: 1)
 end

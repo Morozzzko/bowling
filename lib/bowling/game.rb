@@ -6,6 +6,8 @@ require 'securerandom'
 module Bowling
   class NextFrameState
     def call(frame, pins)
+      return :too_many_pins if pins > 10
+
       case frame
       in Frame(balls: []) if pins == 10
         frame.new(balls: [pins], state: 'ended')
@@ -21,6 +23,8 @@ module Bowling
         frame.new(balls: [10, pins])
       in LastFrame(balls: [ball]) if ball + pins == 10
         frame.new(balls: [ball, pins])
+      in LastFrame(balls: [ball]) if ball + pins > 10
+        :too_many_pins
       in LastFrame(balls: balls)
         frame.new(balls: [*balls, pins], state: 'ended')
       end

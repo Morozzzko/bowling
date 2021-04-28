@@ -48,10 +48,18 @@ module Bowling
       end
     end
 
+    def score
+      @score ||= calculate_score.call(self)
+    end
+
     private
 
     def next_frame_state
       @next_frame_state ||= NextFrameState.new
+    end
+
+    def calculate_score
+      @calculate_score ||= CalculateScore.new
     end
   end
 end

@@ -9,7 +9,7 @@ module Bowling
     attribute :serial_number, Types::Integer.constrained(included_in: 1..10)
 
     def strike?
-      balls.first == 10
+      balls == [10]
     end
 
     def spare?

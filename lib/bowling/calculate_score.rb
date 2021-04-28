@@ -33,34 +33,16 @@ module Bowling
     end
 
     def frame_score(frame, next_frames)
-      if strike?(frame)
+      if frame.strike?
         balls = next_frames.flat_map(&:balls).take(2)
 
         10 + balls.sum
-      elsif spare?(frame)
+      elsif frame.spare?
         balls = next_frames.flat_map(&:balls).take(1)
 
         10 + balls.sum
       else
         frame.balls.sum
-      end
-    end
-
-    def strike?(frame)
-      case frame
-      in Frame(balls: [10])
-        true
-      else
-        false
-      end
-    end
-
-    def spare?(frame)
-      case frame
-      in Frame(balls: [first, second]) if first + second == 10
-        true
-      else
-        false
       end
     end
   end

@@ -2,12 +2,18 @@
 
 ## Install
 
-0. Make sure you have a correct Ruby version installed. See [.ruby-version](.ruby-version) for an up-to-date info.
-1. Download this repo: `git clone git@github.com:Morozzzko/bowling.git`
-2. Navigate to the downloaded directory: `cd bowling`
-3. Run `bundle install` to install dependencies
-4. Run `bundle exec rake db:migrate` to run migrations
-4. Run `bundle exec rackup` to run the server or `bundle exec rspec` to run the tests
+1. Make sure you have a correct Ruby version installed. See [.ruby-version](.ruby-version) for an up-to-date info.
+2. Download this repo: `git clone git@github.com:Morozzzko/bowling.git`
+3. Navigate to the downloaded directory: `cd bowling`
+4. Run `bundle install` to install dependencies
+5. Run `bundle exec rake db:migrate` to run migrations
+6. Run `bundle exec rackup` to run the server 
+
+## Running tests
+
+1. Perform steps 1-4 of "Install" section
+2. Run  `RACK_ENV=test bundle exec rake db:migrate` to create test database
+3. Run `bundle exec rspec` to run the tests
 
 ## API
 

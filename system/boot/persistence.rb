@@ -2,9 +2,9 @@
 
 require 'types'
 
-Bowling::Container.boot(:persistence) do
+Bowling::Container.boot(:persistence) do |system|
   settings do
-    key :database_url, ::Types::FilledString.default('sqlite:///tmp/bowling.sqlite3')
+    key :database_url, (::Types::FilledString.default { "sqlite://tmp/bowling.#{system.env}.sqlite3" })
   end
 
   init do

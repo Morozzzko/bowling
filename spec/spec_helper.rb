@@ -5,6 +5,10 @@ require 'simplecov'
 
 SimpleCov.start
 
+ENV['RACK_ENV'] = 'test' unless ENV['RACK_ENV']
+
+require_relative '../boot'
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
@@ -28,7 +32,14 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
   config.include Rack::Test::Methods, type: :http
+
+  config.around do |example|
+    Bowling::Container['persistence.db'].transaction do
+      example.run
+    ensure
+      raise Sequel::Rollback
+    end
+  end
 end
 
-require_relative '../boot'
 require_relative 'support/factories'

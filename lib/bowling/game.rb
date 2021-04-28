@@ -28,9 +28,10 @@ module Bowling
   end
 
   class Frame < Dry::Struct
-    attribute :balls, Types.Array(Types::Integer).default([])
+    attribute :balls, Types.Array(Types::Integer).default([].freeze)
     attribute :state, Types::String.default('playing').enum('playing', 'ended')
     attribute :type, Types.Value('regular').default('regular')
+    attribute :serial_number, Types::Integer
 
     def strike?
       balls.first == 10
@@ -46,9 +47,13 @@ module Bowling
   end
 
   class LastFrame < Dry::Struct
-    attribute :balls, Types.Array(Types::Integer).default([])
+    attribute :balls, Types.Array(Types::Integer).default([].freeze)
     attribute :state, Types::String.default('playing').enum('playing', 'ended')
     attribute :type, Types.Value('last').default('last')
+
+    def serial_number
+      10
+    end
 
     def ended?
       state == 'ended'
@@ -56,7 +61,7 @@ module Bowling
   end
 
   class Game < Dry::Struct
-    attribute :frames, Types.Array(Frame | LastFrame).default([Frame.new])
+    attribute :frames, Types.Array(Frame | LastFrame).default([Frame.new(serial_number: 1)].freeze)
     attribute :state, Types::String.default('playing').enum('playing', 'ended')
     attribute :player_name, Types::String
     attribute :uid, (Types::UID.default { SecureRandom.hex })
@@ -73,6 +78,10 @@ module Bowling
       frames.flat_map(&:balls)
     end
 
+    def next_frame_number
+      frames.count + 1
+    end
+
     def throw_ball(knocked_down_pins)
       *previous_frames, _ = frames
 
@@ -80,7 +89,7 @@ module Bowling
       in Frame(state: 'ended') => frame if frames.count == 9
         new(frames: [*previous_frames, frame, LastFrame.new])
       in Frame(state: 'ended') => frame
-        new(frames: [*previous_frames, frame, Frame.new])
+        new(frames: [*previous_frames, frame, Frame.new(serial_number: next_frame_number)])
       in Frame => frame
         new(frames: [*previous_frames, frame])
       in LastFrame(state: 'ended') => frame

@@ -50,8 +50,6 @@ module Bowling
       case frame
       in Frame(balls: [10])
         true
-      in LastFrame(balls: [10])
-        true
       else
         false
       end
@@ -60,8 +58,6 @@ module Bowling
     def spare?(frame)
       case frame
       in Frame(balls: [first, second]) if first + second == 10
-        true
-      in LastFrame(balls: [first, second]) if first + second == 10
         true
       else
         false

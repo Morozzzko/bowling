@@ -39,11 +39,18 @@ RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec
     context 'when params are provided' do
       let(:params) { { player_name: 'Vic' } }
 
-      it 'creates a new game' do
+      it 'creates a new game' do # rubocop:disable RSpec/ExampleLength
         expect(response).to be_successful
-        expect(json_body).to match({ 'game_uid' => String })
+        expect(json_body).to match(
+          {
+            'uid' => String,
+            'player_name' => 'Vic',
+            'state' => 'playing',
+            'score' => Hash
+          }
+        )
 
-        game_uid = json_body['game_uid']
+        game_uid = json_body['uid']
 
         game = games[game_uid]
 

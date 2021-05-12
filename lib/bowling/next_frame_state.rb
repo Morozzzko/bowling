@@ -6,6 +6,7 @@ module Bowling
   class NextFrameState
     def call(frame, pins)
       return :too_many_pins if pins > 10
+      return :can_not_knock_negative_pins if pins.negative?
 
       case frame
       # Any last throw is recorded as-is, even if it's a strike

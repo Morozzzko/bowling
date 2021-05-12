@@ -71,5 +71,19 @@ RSpec.describe Bowling::API::Application, '/api/games/:uid/knocked_down_pins', t
         )
       end
     end
+
+    context 'with negative pins' do
+      let(:params) { { pins: -1 } }
+
+      it 'responds with an error' do
+        expect(response.status).to be(422)
+        expect(json_body).to eql(
+          {
+            'status' => 'bowling_error',
+            'error_code' => 'can_not_knock_negative_pins'
+          }
+        )
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@ RSpec.describe Bowling::CalculateScore do
     let(:new_game) { Bowling::Game.new(player_name: 'vic') }
 
     describe 'with first ball' do
-      let(:game) { new_game.throw_ball(3) }
+      let(:game) { new_game.throw_ball(3).value! }
 
       it 'returns score equivalent to the number of pins' do
         expect(score).to eql(
@@ -23,7 +23,7 @@ RSpec.describe Bowling::CalculateScore do
     end
 
     describe 'with a spare' do
-      let(:game) { new_game.throw_ball(3).throw_ball(7).throw_ball(2) }
+      let(:game) { new_game.throw_ball(3).bind { _1.throw_ball(7) }.bind {_1.throw_ball(2) }.value! }
 
       it 'returns score equivalent ' do
         expect(score).to eql(
@@ -37,7 +37,7 @@ RSpec.describe Bowling::CalculateScore do
     end
 
     describe 'with first strike and two more successful balls' do
-      let(:game) { new_game.throw_ball(10).throw_ball(5).throw_ball(0) }
+      let(:game) { new_game.throw_ball(10).bind { _1.throw_ball(5) }.bind {_1.throw_ball(0) }.value! }
 
       it 'returns score equivalent to the number of pins' do
         expect(score).to eql(
@@ -53,9 +53,9 @@ RSpec.describe Bowling::CalculateScore do
 
     describe 'finishing a game with all strikes' do
       let(:game) do
-        (1..12).reduce(new_game) do |game, _|
-          game.throw_ball(10)
-        end
+        (1..12).reduce(Success(new_game)) do |game, _|
+          game.bind { _1.throw_ball(10) }
+        end.value!
       end
 
       it 'returns score of 300' do # rubocop:disable RSpec/ExampleLength

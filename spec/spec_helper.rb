@@ -33,6 +33,14 @@ RSpec.configure do |config|
 
   config.include Rack::Test::Methods, type: :http
 
+  config.include Dry::Monads[:result]
+
+  config.include Module.new do
+    def container
+      Bowling::Container
+    end
+  end
+
   config.around do |example|
     Bowling::Container['persistence.db'].transaction do
       example.run

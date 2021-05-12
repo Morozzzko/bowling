@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'bowling/throw_ball'
+
 # rubocop:disable Metrics/BlockLength
 module Bowling
   module API
@@ -33,14 +35,14 @@ module Bowling
             routes.on 'knocked_down_pins' do
               routes.post do
                 knocked_down_pins = typecast_params.Integer!('pins')
-                case game.throw_ball(knocked_down_pins)
-                in Symbol => error
+                case Bowling::ThrowBall.new.call(game, knocked_down_pins)
+                in Failure(error)
                   response.status = 422
                   {
                     status: 'bowling_error',
                     error_code: error.to_s
                   }
-                in Game => new_game_state
+                in Success(new_game_state)
                   games.update(new_game_state)
                   serialize_game.call(new_game_state)
                 end

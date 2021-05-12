@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'roda'
+require 'dry-monads'
 
 module Bowling
   module API
     class Application < Roda
+      include Dry::Monads[:result]
+
       plugin :json_parser
       plugin :json
       plugin :request_headers

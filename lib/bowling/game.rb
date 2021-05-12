@@ -6,6 +6,7 @@ require 'securerandom'
 require 'bowling/frame'
 require 'bowling/next_frame_state'
 require 'bowling/calculate_score'
+require 'bowling/throw_ball'
 
 module Bowling
   class Game < Dry::Struct
@@ -30,34 +31,15 @@ module Bowling
       frames.count + 1
     end
 
-    def throw_ball(knocked_down_pins)
-      *previous_frames, _ = frames
-
-      case next_frame_state.call(current_frame, knocked_down_pins)
-      # Once the last frame ends, we'll end the whole game
-      in Frame(state: 'ended', serial_number: 10) => frame
-        new(frames: [*previous_frames, frame], state: 'ended')
-      # We add new frames after the previous ones have ended
-      in Frame(state: 'ended') => frame
-        new(frames: [*previous_frames, frame, Frame.new(serial_number: next_frame_number)])
-      # Just update a frame after a throw
-      in Frame => frame
-        new(frames: [*previous_frames, frame])
-      # Propagate errors
-      in Symbol => error
-        error
-      end
-    end
-
     def score
       @score ||= calculate_score.call(self)
     end
 
-    private
-
-    def next_frame_state
-      @next_frame_state ||= NextFrameState.new
+    def throw_ball(knocked_down_pins)
+      ThrowBall.new.call(self, knocked_down_pins)
     end
+
+    private
 
     def calculate_score
       @calculate_score ||= CalculateScore.new

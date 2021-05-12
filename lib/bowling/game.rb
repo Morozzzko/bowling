@@ -5,6 +5,7 @@ require 'securerandom'
 
 require 'bowling/frame'
 require 'bowling/next_frame_state'
+require 'bowling/calculate_score'
 
 module Bowling
   class Game < Dry::Struct

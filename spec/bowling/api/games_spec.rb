@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'bowling/api/application'
-require 'oj'
 
 RSpec.describe Bowling::API::Application, type: :http do # rubocop:disable RSpec/FilePath
   subject(:app) { described_class }

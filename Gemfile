@@ -7,7 +7,6 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gem 'dry-struct'
 gem 'dry-system', '~> 0.19.0'
 gem 'oj'
-gem 'puma'
 gem 'roda'
 gem 'rom'
 gem 'rom-sql'

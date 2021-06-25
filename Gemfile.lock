@@ -60,6 +60,7 @@ GEM
     parallel (1.20.1)
     parser (3.0.1.0)
       ast (~> 2.4.1)
+    pg (1.2.3)
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -169,6 +170,7 @@ DEPENDENCIES
   dry-struct
   dry-system (~> 0.19.0)
   oj
+  pg
   rack-test
   rake
   roda

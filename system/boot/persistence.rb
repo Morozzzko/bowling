@@ -3,21 +3,19 @@
 require 'types'
 
 Bowling::Container.boot(:persistence) do |system|
-  settings do
-    key :database_url, (::Types::FilledString.default { "sqlite://tmp/bowling.#{system.env}.sqlite3" })
-  end
-
   init do
     require 'sequel'
     require 'rom'
     require 'rom/sql'
+
+    use :settings
 
     Sequel.database_timezone = :utc
     Sequel.application_timezone = :local
 
     rom_config = ROM::Configuration.new(
       :sql,
-      config[:database_url],
+      system[:settings].database_url,
       extensions: %i[]
     )
 
